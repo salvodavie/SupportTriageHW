@@ -68,3 +68,241 @@ Manual validation included creating support tickets, verifying authentication an
 
 Defensive programming techniques were incorporated throughout the application, including runtime validation with Zod, authentication and authorization middleware, conditional query parameter generation, guarded API response handling, existence checks before ticket updates, and frontend error handling using try/catch/finally to ensure invalid input and failed requests were handled gracefully.
 
+
+
+
+
+## Development Timeline
+
+
+This timeline documents my implementation process, debugging workflow, testing, and architectural understanding while completing the Support Triage assignment.
+
+---
+
+## Project Analysis & Backend Development
+
+### 12:56 AM — Initial Project Review
+
+* Reviewed the provided project architecture and assignment requirements.
+* Installed project dependencies and verified the development environment.
+* Identified unfamiliar backend concepts requiring additional research:
+
+  * Authentication tokens
+  * Backend request flow
+  * Store abstraction
+  * TypeScript interfaces
+  * Existing TODO locations
+  * Frontend/backend communication
+* Investigated initial project issues:
+
+  * Tickets not submitting
+  * Admin ticket list not displaying
+  * Backend tests returning **501 Not Implemented**
+
+---
+
+### 2:30 AM — Architecture Research
+
+Before implementing features, I focused on understanding the existing architecture.
+
+Topics studied:
+
+* Express routing
+* Authentication & authorization
+* Middleware flow
+* Zod validation
+* Store abstraction
+* TypeScript interfaces
+* Route implementations
+* Existing TODO locations
+
+I documented the backend request lifecycle as:
+
+```text
+Client Request
+      ↓
+Express Route
+      ↓
+Authentication
+      ↓
+Zod Validation
+      ↓
+Store (Persistence Layer)
+      ↓
+JSON File Storage
+      ↓
+Frontend Response
+```
+
+Additional observations:
+
+* `support-feedback.json` is automatically created if it does not exist.
+* JSON persistence is handled by the provided store abstraction.
+* Route handlers communicate asynchronously with the frontend.
+
+This architectural understanding helped reduce implementation uncertainty before coding.
+
+---
+
+### 3:00–3:40 AM — Backend Implementation
+
+Implemented the remaining backend TODOs.
+
+Completed:
+
+* Ticket creation
+* Ticket lookup
+* Ticket listing
+* Ticket status updates
+* Express route implementations
+* Store implementation
+* JSON persistence
+* Automatic ticket numbering
+* Timestamp generation
+* Proper HTTP status handling
+
+Verification:
+
+* All provided backend tests passing with `npm test`.
+
+Committed and pushed the completed backend implementation.
+
+---
+
+## Frontend Integration & Polish
+
+### 2:00 PM — Resume Development
+
+Resumed development after an overnight break and shifted focus toward frontend integration.
+
+Connected the React frontend to the completed backend API.
+
+Implemented:
+
+* Ticket submission (POST)
+* Ticket loading (GET)
+* Ticket status updates (PATCH)
+* Admin ticket listing
+* Role-based status updates
+* Search functionality
+
+---
+
+### Frontend Debugging
+
+While implementing Admin Triage, ticket filtering initially failed.
+
+**Root Cause**
+
+`URLSearchParams.toString()` returns:
+
+
+status=open&q=layout
+
+
+instead of:
+
+
+?status=open&q=layout
+
+
+The API helper expected the leading `?`, resulting in invalid request URLs whenever search or filters were used.
+
+**Solution**
+
+* Detect whether query parameters exist.
+* Prepend `?` only when necessary.
+* Pass an empty string when no parameters exist.
+
+This restored:
+
+* Search
+* Status filtering
+* Backend communication
+* Correct API requests
+
+---
+
+### API Completion
+
+Completed frontend integration for all required endpoints:
+
+* `POST /api/support-feedback`
+* `GET /api/support-feedback`
+* `PATCH /api/support-feedback/:id/status`
+
+Additional work included:
+
+* Ticket rendering
+* Loading states
+* Success handling
+* Error handling
+* Admin-only status updates
+
+Verified authorization behavior manually.
+
+---
+
+### 4:02 PM — Responsive Layout
+
+Improved usability on narrower screen sizes.
+
+Changes included:
+
+* Flex wrapping for Admin Triage
+* Reduced horizontal overflow
+* Improved narrow viewport layout
+
+Verified responsive behavior through manual testing.
+
+---
+
+### 4:08 PM — Supplemental Backend Testing
+
+Added two additional backend tests beyond the provided suite.
+
+Implemented:
+
+* HTTP 401 verification for unauthenticated requests
+* HTTP 404 verification for updating a non-existent ticket
+
+Confirmed all backend tests continued to pass.
+
+---
+
+### 4:32 PM — Admin Triage Enhancements
+
+Extended filtering functionality beyond the original implementation.
+
+Added:
+
+* Category filtering
+* Severity filtering
+* Additional URL query parameters
+* React state management for new filters
+
+Verified:
+
+* Search
+* Status filtering
+* Category filtering
+* Severity filtering
+
+through manual testing.
+
+---
+
+### 4:42 PM — Documentation
+
+Prepared final project documentation.
+
+Completed:
+
+* Backend implementation notes
+* Frontend implementation notes
+* Testing & validation summary
+* Defensive programming summary
+* Tradeoffs & remaining work
+* Responsive layout notes
+* Admin filtering documentation
+* AI usage disclosure
