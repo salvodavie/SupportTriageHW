@@ -23,7 +23,8 @@ export default function AdminTriage({ token }: Props) {
       const params = new URLSearchParams();
       if (query) params.set('q', query);
       if (status) params.set('status', status);
-      setTickets(await listTickets(token, params.toString()));
+      const queryString = params.toString();
+      setTickets(await listTickets(token, queryString ? `?${queryString}` : ''));
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : 'Failed to load tickets');
     } finally {

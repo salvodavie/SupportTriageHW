@@ -30,20 +30,39 @@ async function requestJson<T>(path: string, token: string, init: RequestInit = {
   return body.data;
 }
 
-export async function createTicket(_token: string, _payload: CreateSupportFeedbackInput): Promise<SupportFeedbackTicket> {
-  throw new Error('TODO: call POST /api/support-feedback');
+export async function createTicket(
+  token: string,
+  payload: CreateSupportFeedbackInput
+): Promise<SupportFeedbackTicket> {
+  return requestJson<SupportFeedbackTicket>('/api/support-feedback', token, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
 }
 
-export async function listTickets(_token: string, _query = ''): Promise<SupportFeedbackTicket[]> {
-  throw new Error('TODO: call GET /api/support-feedback');
+export async function listTickets(
+  token: string,
+  query = ''
+): Promise<SupportFeedbackTicket[]> {
+  return requestJson<SupportFeedbackTicket[]>(
+    `/api/support-feedback${query}`,
+    token
+  );
 }
 
 export async function updateTicketStatus(
-  _token: string,
-  _ticketId: string,
-  _status: FeedbackStatus
+  token: string,
+  ticketId: string,
+  status: FeedbackStatus
 ): Promise<SupportFeedbackTicket> {
-  throw new Error('TODO: call PATCH /api/support-feedback/:id/status');
+  return requestJson<SupportFeedbackTicket>(
+    `/api/support-feedback/${ticketId}/status`,
+    token,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    }
+  );
 }
 
 export { requestJson };

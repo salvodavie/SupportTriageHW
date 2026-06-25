@@ -49,6 +49,12 @@ button:disabled {
   justify-content: space-between;
 }
 
+.panel,
+.triage-layout,
+.ticket-detail {
+  min-width: 0;
+}
+
 .app-header {
   margin-bottom: 1.5rem;
 }
@@ -139,12 +145,19 @@ textarea {
 .filters {
   justify-content: flex-start;
   margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.filters input,
+.filters select {
+  min-width: 220px;
 }
 
 .triage-layout {
   display: grid;
   gap: 1rem;
   grid-template-columns: minmax(0, 1fr) 380px;
+  align-items: start;
 }
 
 table {

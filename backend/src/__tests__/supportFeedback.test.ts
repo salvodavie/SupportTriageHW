@@ -123,6 +123,25 @@ describe('support feedback API', () => {
     expect(updateResponse.body.success).toBe(true);
     expect(updateResponse.body.data.status).toBe('resolved');
     expect(updateResponse.body.data.updatedAt).not.toBe(createResponse.body.data.updatedAt);
+
+  });
+
+  it('rejects requests without authentication', async () => {
+    await request(app)
+      .post('/api/support-feedback')
+      .send(validPayload)
+      .expect(401);
+  });
+
+  it('returns 404 when updating a ticket that does not exist', async () => {
+    const response = await request(app)
+      .patch('/api/support-feedback/not-a-real-ticket/status')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ status: 'resolved' })
+      .expect(404);
+
+    expect(response.body.success).toBe(false);
+    expect(response.body.error).toBe('Ticket not found');
   });
 });
 
