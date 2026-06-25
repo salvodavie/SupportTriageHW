@@ -53,7 +53,7 @@ async list(filters: TicketListFilters = {}): Promise<SupportFeedbackTicket[]> {
       const searchableText = [
         ticket.subject,
         ticket.details,
-        ticket.pagePath,
+        ticket.pagePath, 
         ticket.category,
         ticket.severity,
         ticket.status,
@@ -117,5 +117,6 @@ async updateStatus(id: string, status: FeedbackStatus): Promise<SupportFeedbackT
     const maxTicketNumber = tickets.reduce((max, ticket) => Math.max(max, ticket.ticketNumber), 1000);
     return maxTicketNumber + 1;
   }
+
 }
 
